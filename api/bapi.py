@@ -12,9 +12,24 @@ def home():
 def ai_endpoint():
   pollai_token = os.environ.get('POLLAI_TOKEN')
   try:
-    response = requests.get("https://api.github.com/users/octocat")
-    response.raise_for_status() # Raise an exception for HTTP errors
-    data = response.json()
-    return f"The token is: {pollai_token[:7]}... and Octocat's name is {data.get('name', 'N/A')}"
+    response = requests.post(
+      'https://text.pollinations.ai/openai',
+      headers={
+        'Content-Type': 'application/json',
+        'Authentication': 'Bearer {pollai_token}'
+      },
+      json={
+        'model': 'gpt-4.1-mini',
+        'messages': [
+          { 'role': 'system', 'content': 'You are a helpful assistant.' },
+          { 'role': 'user', 'content': 'In two sentences, what is your guess on what Bedirtor means?' }
+        ],
+        'temperature': 0.9,
+        'private': True,
+      }
+    )
+    response.raise_for_status()  # Raise an exception for HTTP errors
+    data = response.text()
+    return f'The token is: {pollai_token[:5]}...<br>{data}'
   except requests.exceptions.RequestException as e:
-    return f"Error making request: {e}"
+    return f'Error making request: {e}''
