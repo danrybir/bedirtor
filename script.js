@@ -101,14 +101,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   // Save document
   saveBtn.addEventListener('click', () => {
-    const content = editor.innerHTML;
-    const blob = new Blob([content], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'document.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const filename = prompt('Enter filename:', 'document.html');
+    if (filename) {
+      const content = editor.innerHTML;
+      const blob = new Blob([content], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
     mainMenu.style.display = 'none';
   });
 
@@ -116,18 +119,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
   copyBtn.addEventListener('click', () => {
     document.execCommand('copy');
     hideContextMenu();
-    mainMenu.style.display = 'none';
   });
 
   cutBtn.addEventListener('click', () => {
     document.execCommand('cut');
     hideContextMenu();
-    mainMenu.style.display = 'none';
   });
 
   pasteBtn.addEventListener('click', () => {
     document.execCommand('paste');
     hideContextMenu();
-    mainMenu.style.display = 'none';
   });
 });

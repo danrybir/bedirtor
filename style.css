@@ -114,3 +114,18 @@ body {
 .context-menu button:hover {
   background-color: #e0e0e0;
 }
+
+.context-menu-icons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 5px;
+}
+.context-menu-icons button {
+  padding: 5px;
+  width: auto;
+}
+.context-menu-icons img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
