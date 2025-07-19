@@ -44,26 +44,4 @@ window.addEventListener('DOMContentLoaded', (event) => {
     document.execCommand('underline', false, null);
     hideContextMenu();
   });
-
-  // Newline styling reset
-  editor.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') {
-      e.preventDefault(); // Prevent default newline behavior
-
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-
-      // Insert a new line
-      const br = document.createElement('br');
-      range.deleteContents();
-      range.insertNode(br);
-      range.setStartAfter(br);
-      range.setEndAfter(br);
-      selection.removeAllRanges();
-      selection.addRange(range);
-
-      // Reset styling for the new line
-      document.execCommand('removeFormat', false, null);
-    }
-  });
 });
