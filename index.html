@@ -10,7 +10,22 @@
   </head>
   <body>
     <div class="header">
+      <div id="mainMenuBtn" class="menu-button">
+        <div class="menu-button-line"></div>
+        <div class="menu-button-line"></div>
+        <div class="menu-button-line"></div>
+      </div>
       <h1>Bedirtor</h1>
+    </div>
+    <div id="mainMenu" class="main-menu">
+      <button id="newBtn">New</button>
+      <button id="openBtn">Open</button>
+      <input type="file" id="fileInput" style="display: none;" accept=".txt,.html,.md">
+      <button id="saveBtn">Save</button>
+      <hr>
+      <button id="copyBtn">Copy</button>
+      <button id="cutBtn">Cut</button>
+      <button id="pasteBtn">Paste</button>
     </div>
     <div class="content">
       <div id="editor" contenteditable="true"></div>
