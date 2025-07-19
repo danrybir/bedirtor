@@ -19,7 +19,7 @@ def ai_endpoint():
         'Authentication': 'Bearer {pollai_token}'
       },
       json={
-        'model': 'gpt-4.1-mini',
+        'model': 'gpt-4o-mini',
         'messages': [
           { 'role': 'system', 'content': 'You are a helpful assistant.' },
           { 'role': 'user', 'content': 'In two sentences, what is your guess on what Bedirtor means?' }
