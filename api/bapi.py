@@ -32,4 +32,4 @@ def ai_endpoint():
     data = response.text()
     return f'The token is: {pollai_token[:5]}...<br>{data}'
   except requests.exceptions.RequestException as e:
-    return f'Error making request: {e}''
+    return f'Error making request: {e}'
