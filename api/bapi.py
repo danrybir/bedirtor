@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 app = Flask(__name__)
 
@@ -8,4 +9,5 @@ def home():
 
 @app.route('/api/ai-endpoint')
 def ai_endpoint():
-  return 'TODO'
+  pollai_token = os.environ.get('POLLAI_TOKEN')
+  return f"The token is: {pollai_token}"
