@@ -13,11 +13,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // Show context menu
   const showContextMenu = (e) => {
     e.preventDefault(); // Prevent default context menu
-    if (isMobile()) {
+    // if(isMobile()) {
       contextMenu.style.display = 'block';
       contextMenu.style.left = `${e.clientX}px`;
       contextMenu.style.top = `${e.clientY}px`;
-    }
+    // }
   };
 
   // Hide context menu
@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   // Newline styling reset
   editor.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+    if(e.key === 'Enter') {
       e.preventDefault(); // Prevent default newline behavior
 
       const selection = window.getSelection();
