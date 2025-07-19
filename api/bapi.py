@@ -29,7 +29,7 @@ def ai_endpoint():
       }
     )
     response.raise_for_status()  # Raise an exception for HTTP errors
-    data = response.text()
+    data = response.text
     return f'The token is: {pollai_token[:5]}...<br>{data}'
   except requests.exceptions.RequestException as e:
     return f'Error making request: {e}'
