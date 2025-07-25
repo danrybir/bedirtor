@@ -63,16 +63,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // Styling functions
   boldBtn.addEventListener('click', () => {
     document.execCommand('bold', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
   italicBtn.addEventListener('click', () => {
     document.execCommand('italic', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
   underlineBtn.addEventListener('click', () => {
     document.execCommand('underline', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
@@ -82,6 +85,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     } else {
       document.execCommand('formatBlock', false, `<${heading}>`);
     }
+    editor.focus();
     hideContextMenu();
   };
 
@@ -102,16 +106,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (url) {
       document.execCommand('createLink', false, url);
     }
+    editor.focus();
     hideContextMenu();
   });
 
   listOlBtn.addEventListener('click', () => {
     document.execCommand('insertOrderedList', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
   listUlBtn.addEventListener('click', () => {
     document.execCommand('insertUnorderedList', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
@@ -181,16 +188,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
   // Copy, Cut, Paste
   copyBtn.addEventListener('click', () => {
     document.execCommand('copy');
+    editor.focus();
     hideContextMenu();
   });
 
   cutBtn.addEventListener('click', () => {
     document.execCommand('cut');
+    editor.focus();
     hideContextMenu();
   });
 
-  pasteBtn.addEventListener('click', () => {
-    document.execCommand('paste');
+  pasteBtn.addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      document.execCommand('insertText', false, text);
+    } catch (err) {
+      console.error('Failed to read clipboard contents: ', err);
+      // Fallback for older browsers or if permission is denied
+      document.execCommand('paste');
+    }
+    editor.focus();
     hideContextMenu();
   });
 });
