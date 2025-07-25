@@ -11,9 +11,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   editor.addEventListener('input', () => {
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(() => {
-      const markdown = editor.innerText;
-      const html = converter.makeHtml(markdown);
-      localStorage.setItem('editorContent', html);
+      localStorage.setItem('editorContent', editor.innerHTML);
     }, 500); // Save after 500ms of inactivity
   });
   const contextMenu = document.getElementById('contextMenu');
