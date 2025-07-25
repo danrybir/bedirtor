@@ -85,6 +85,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
     hideContextMenu();
   };
 
+  const toggleHeading = (heading) => {
+    if (document.queryCommandValue('formatBlock') === heading) {
+      document.execCommand('formatBlock', false, 'div');
+    } else {
+      document.execCommand('formatBlock', false, `<${heading}>`);
+    }
+    editor.focus(); // Keep focus
+    hideContextMenu();
+  };
+
+  boldBtn.addEventListener('click', () => {
+    document.execCommand('bold', false, null);
+    editor.focus();
+    hideContextMenu();
+  });
+
+  italicBtn.addEventListener('click', () => {
+    document.execCommand('italic', false, null);
+    editor.focus();
+    hideContextMenu();
+  });
+
+  underlineBtn.addEventListener('click', () => {
+    document.execCommand('underline', false, null);
+    editor.focus();
+    hideContextMenu();
+  });
+
   h1Btn.addEventListener('click', () => {
     toggleHeading('h1');
   });
@@ -102,95 +130,44 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (url) {
       document.execCommand('createLink', false, url);
     }
+    editor.focus();
     hideContextMenu();
   });
 
   listOlBtn.addEventListener('click', () => {
     document.execCommand('insertOrderedList', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
   listUlBtn.addEventListener('click', () => {
     document.execCommand('insertUnorderedList', false, null);
+    editor.focus();
     hideContextMenu();
   });
 
-  // Allow default Enter key behavior
-  editor.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') {
-      // Allow default Enter key behavior (e.g., new paragraph/line)
-      // The browser's default behavior for 'Enter' in a contenteditable element
-      // typically handles newlines and formatting inheritance correctly.
-    }
-  });
-
-  // Toggle main menu visibility
-  mainMenuBtn.addEventListener('click', () => {
-    mainMenu.style.display = mainMenu.style.display === 'block' ? 'none' : 'block';
-  });
-
-  // Hide main menu when clicking elsewhere
-  document.addEventListener('click', (e) => {
-    if (!mainMenu.contains(e.target) && !mainMenuBtn.contains(e.target)) {
-      mainMenu.style.display = 'none';
-    }
-  });
-
-  // New document
-  newBtn.addEventListener('click', () => {
-    editor.innerHTML = '';
-    mainMenu.style.display = 'none';
-  });
-
-  // Open document
-  openBtn.addEventListener('click', () => {
-    fileInput.click();
-  });
-
-  fileInput.addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const markdown = e.target.result;
-        const html = converter.makeHtml(markdown);
-        editor.innerHTML = html;
-      };
-      reader.readAsText(file);
-    }
-    mainMenu.style.display = 'none';
-  });
-
-  // Save document
-  saveBtn.addEventListener('click', () => {
-    const filename = prompt('Enter filename:', 'document.md');
-    if (filename) {
-      const html = editor.innerHTML;
-      const markdown = converter.makeMarkdown(html);
-      const blob = new Blob([markdown], { type: 'text/markdown' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-    mainMenu.style.display = 'none';
-  });
-
-  // Copy, Cut, Paste
   copyBtn.addEventListener('click', () => {
     document.execCommand('copy');
+    editor.focus();
     hideContextMenu();
   });
 
   cutBtn.addEventListener('click', () => {
     document.execCommand('cut');
+    editor.focus();
     hideContextMenu();
   });
 
-  pasteBtn.addEventListener('click', () => {
-    document.execCommand('paste');
+  pasteBtn.addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      document.execCommand('insertText', false, text);
+    } catch (err) {
+      console.error('Failed to read clipboard contents: ', err);
+      // Fallback for older browsers or if permission is denied
+      document.execCommand('paste');
+    }
+    editor.focus();
     hideContextMenu();
   });
 });
