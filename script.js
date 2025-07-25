@@ -1,9 +1,31 @@
 window.addEventListener('DOMContentLoaded', (event) => {
   const editor = document.getElementById('editor');
+  let saveTimeout;
+
+  const savedContent = localStorage.getItem('editorContent');
+  if (savedContent) {
+    editor.innerHTML = savedContent;
+  }
+
+  // saving
+  editor.addEventListener('input', () => {
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(() => {
+      const markdown = editor.innerText;
+      const html = converter.makeHtml(markdown);
+      localStorage.setItem('editorContent', html);
+    }, 500); // Save after 500ms of inactivity
+  });
   const contextMenu = document.getElementById('contextMenu');
   const boldBtn = document.getElementById('boldBtn');
   const italicBtn = document.getElementById('italicBtn');
   const underlineBtn = document.getElementById('underlineBtn');
+  const h1Btn = document.getElementById('h1Btn');
+  const h2Btn = document.getElementById('h2Btn');
+  const h3Btn = document.getElementById('h3Btn');
+  const linkBtn = document.getElementById('linkBtn');
+  const listOlBtn = document.getElementById('listOlBtn');
+  const listUlBtn = document.getElementById('listUlBtn');
 
   const mainMenuBtn = document.getElementById('mainMenuBtn');
   const mainMenu = document.getElementById('mainMenu');
@@ -14,6 +36,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   const copyBtn = document.getElementById('copyBtn');
   const cutBtn = document.getElementById('cutBtn');
   const pasteBtn = document.getElementById('pasteBtn');
+  const converter = new showdown.Converter();
 
   // Function to detect mobile
   const isMobile = () => {
@@ -55,6 +78,39 @@ window.addEventListener('DOMContentLoaded', (event) => {
     hideContextMenu();
   });
 
+  h1Btn.addEventListener('click', () => {
+    document.execCommand('formatBlock', false, '<h1>');
+    hideContextMenu();
+  });
+
+  h2Btn.addEventListener('click', () => {
+    document.execCommand('formatBlock', false, '<h2>');
+    hideContextMenu();
+  });
+
+  h3Btn.addEventListener('click', () => {
+    document.execCommand('formatBlock', false, '<h3>');
+    hideContextMenu();
+  });
+
+  linkBtn.addEventListener('click', () => {
+    const url = prompt('Enter a URL:');
+    if (url) {
+      document.execCommand('createLink', false, url);
+    }
+    hideContextMenu();
+  });
+
+  listOlBtn.addEventListener('click', () => {
+    document.execCommand('insertOrderedList', false, null);
+    hideContextMenu();
+  });
+
+  listUlBtn.addEventListener('click', () => {
+    document.execCommand('insertUnorderedList', false, null);
+    hideContextMenu();
+  });
+
   // Allow default Enter key behavior
   editor.addEventListener('keydown', (e) => {
     if(e.key === 'Enter') {
@@ -92,7 +148,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        editor.innerHTML = e.target.result;
+        const markdown = e.target.result;
+        const html = converter.makeHtml(markdown);
+        editor.innerHTML = html;
       };
       reader.readAsText(file);
     }
@@ -101,10 +159,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
   // Save document
   saveBtn.addEventListener('click', () => {
-    const filename = prompt('Enter filename:', 'document.html');
+    const filename = prompt('Enter filename:', 'document.md');
     if (filename) {
-      const content = editor.innerHTML;
-      const blob = new Blob([content], { type: 'text/html' });
+      const html = editor.innerHTML;
+      const markdown = converter.makeMarkdown(html);
+      const blob = new Blob([markdown], { type: 'text/markdown' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = filename;

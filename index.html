@@ -29,10 +29,28 @@
       <div id="editor" contenteditable="true"></div>
     </div>
     <div id="contextMenu" class="context-menu">
-      <button id="boldBtn"><b>B</b></button>
-      <button id="italicBtn"><i>I</i></button>
-      <button id="underlineBtn"><u>U</u></button>
+      <div class="context-menu-row">
+        <button id="copyBtn"><img src="assets/copy.svg" alt="Copy"></button>
+        <button id="cutBtn"><img src="assets/cut.svg" alt="Cut"></button>
+        <button id="pasteBtn"><img src="assets/paste.svg" alt="Paste"></button>
+      </div>
+      <div class="context-menu-row">
+        <button id="boldBtn"><b>B</b></button>
+        <button id="italicBtn"><i>I</i></button>
+        <button id="underlineBtn"><u>U</u></button>
+      </div>
+      <div class="context-menu-row">
+        <button id="h1Btn">H1</button>
+        <button id="h2Btn">H2</button>
+        <button id="h3Btn">H3</button>
+      </div>
+      <div class="context-menu-row">
+        <button id="linkBtn">Link</button>
+        <button id="listOlBtn">OL</button>
+        <button id="listUlBtn">UL</button>
+      </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

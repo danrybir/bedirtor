@@ -115,16 +115,19 @@ body {
   background-color: #e0e0e0;
 }
 
-.context-menu-icons {
+.context-menu-row {
   display: flex;
   justify-content: space-around;
   margin-bottom: 5px;
 }
-.context-menu-icons button {
+
+.context-menu-row button {
   padding: 5px;
   width: auto;
+  font-size: 1.2em;
 }
-.context-menu-icons img {
+
+.context-menu-row img {
   width: 20px;
   height: 20px;
   vertical-align: middle;
