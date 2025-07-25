@@ -199,15 +199,36 @@ window.addEventListener('DOMContentLoaded', (event) => {
   });
 
   pasteBtn.addEventListener('click', async () => {
+    hideContextMenu();
     try {
-      const text = await navigator.clipboard.readText();
-      document.execCommand('insertText', false, text);
+      const clipboardItems = await navigator.clipboard.read();
+      let htmlContent = null;
+      let textContent = null;
+
+      for (const item of clipboardItems) {
+        if (item.types.includes('text/html')) {
+          const blob = await item.getType('text/html');
+          htmlContent = await blob.text();
+          break; // Prefer HTML
+        } else if (item.types.includes('text/plain')) {
+          const blob = await item.getType('text/plain');
+          textContent = await blob.text();
+        }
+      }
+
+      if (htmlContent) {
+        document.execCommand('insertHTML', false, htmlContent);
+      } else if (textContent) {
+        document.execCommand('insertText', false, textContent);
+      } else {
+        // Fallback for older browsers or if clipboard is empty/unreadable
+        document.execCommand('paste');
+      }
     } catch (err) {
       console.error('Failed to read clipboard contents: ', err);
       // Fallback for older browsers or if permission is denied
       document.execCommand('paste');
     }
-    editor.focus();
-    hideContextMenu();
+    editor.focus(); // Restore focus after the operation
   });
 });
