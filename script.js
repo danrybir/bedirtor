@@ -78,19 +78,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
     hideContextMenu();
   });
 
-  h1Btn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<h1>');
+  const toggleHeading = (heading) => {
+    if (document.queryCommandValue('formatBlock') === heading) {
+      document.execCommand('formatBlock', false, 'div');
+    } else {
+      document.execCommand('formatBlock', false, `<${heading}>`);
+    }
     hideContextMenu();
+  };
+
+  h1Btn.addEventListener('click', () => {
+    toggleHeading('h1');
   });
 
   h2Btn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<h2>');
-    hideContextMenu();
+    toggleHeading('h2');
   });
 
   h3Btn.addEventListener('click', () => {
-    document.execCommand('formatBlock', false, '<h3>');
-    hideContextMenu();
+    toggleHeading('h3');
   });
 
   linkBtn.addEventListener('click', () => {
